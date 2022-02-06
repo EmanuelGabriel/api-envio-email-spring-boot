@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tbl_usuario")
+@Table(name = "tb_usuario")
 public class Usuario extends EntidadeBase {
 
 
@@ -38,7 +39,6 @@ public class Usuario extends EntidadeBase {
     private String email;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<HistoricoSolicitacao> historico;
-
+    private List<HistoricoSolicitacao> historico = new ArrayList<>();
 
 }

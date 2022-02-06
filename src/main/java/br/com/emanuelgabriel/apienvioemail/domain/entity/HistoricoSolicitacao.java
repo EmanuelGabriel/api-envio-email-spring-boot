@@ -11,8 +11,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tbl_historico_solicitacao")
-public class HistoricoSolicitacao extends EntidadeBase{
+@Table(name = "tb_historico_solicitacao")
+public class HistoricoSolicitacao extends EntidadeBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class HistoricoSolicitacao extends EntidadeBase{
     @Column(name = "DATA_SOLICITACAO")
     private Date dataSolicitacao;
 
-    @Column(name = "DATA_EXPIRACAO_")
+    @Column(name = "DATA_EXPIRACAO")
     private Date dataExpiracao;
 
     @Column(name = "TOKEN")
@@ -34,6 +34,5 @@ public class HistoricoSolicitacao extends EntidadeBase{
     @ManyToOne
     @JoinColumn(name = "ID_USUARIO")
     private Usuario usuario;
-
 
 }

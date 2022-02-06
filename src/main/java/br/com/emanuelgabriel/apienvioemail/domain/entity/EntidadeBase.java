@@ -12,15 +12,9 @@ public class EntidadeBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name="VERSAO")
-    private Long versao;
-
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="DATA_ULT_ALTERACAO")
+    @Column(name = "DATA_ULT_ALTERACAO")
     private Date dataUltimaAlteracao = new Date();
-
-    @Column(name="USUARIO_ULT_ALTERACAO")
-    private String usuarioUltimaAlteracao = "recuperacao.senha";
 
 
 }

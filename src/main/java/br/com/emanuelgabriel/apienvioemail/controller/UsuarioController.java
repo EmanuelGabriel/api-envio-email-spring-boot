@@ -3,20 +3,21 @@ package br.com.emanuelgabriel.apienvioemail.controller;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.request.EmailRequestDTO;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.request.UsuarioRequestDTO;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.response.EmailResponseDTO;
+import br.com.emanuelgabriel.apienvioemail.domain.mapper.response.UsuarioGridResponseDTO;
 import br.com.emanuelgabriel.apienvioemail.domain.repository.UsuarioRepository;
+import br.com.emanuelgabriel.apienvioemail.domain.repository.filter.UsuarioFiltro;
 import br.com.emanuelgabriel.apienvioemail.services.email.EmailService;
 import br.com.emanuelgabriel.apienvioemail.services.exceptions.ObjetoNaoEncontradoException;
 import br.com.emanuelgabriel.apienvioemail.services.exceptions.UsuarioNaoEncontradoException;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -37,6 +38,12 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @GetMapping
+    public ResponseEntity<Page<UsuarioGridResponseDTO>> resumo(@RequestParam(value = "filtro") UsuarioFiltro filtro, Pageable pageable) {
+        var pageFiltro = usuarioRepository.resumo(filtro, pageable);
+        return pageFiltro != null ? ResponseEntity.ok().body(pageFiltro) : ResponseEntity.ok().build();
+    }
 
     @GetMapping(value = "/enviar", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> enviarEmail(@Valid @RequestBody UsuarioRequestDTO request) {

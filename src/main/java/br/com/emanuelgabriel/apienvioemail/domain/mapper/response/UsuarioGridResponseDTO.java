@@ -4,18 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioGridResponseDTO {
+public class UsuarioGridResponseDTO implements Serializable {
 
     private Long id;
-    private String senha;
     private String usuario;
     private String nome;
-    private String cpf;
-    private String email;
+    // private Long historicoId;
     private String token;
+
 
 }

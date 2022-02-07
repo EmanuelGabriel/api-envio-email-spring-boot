@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioFiltro {
 
-    private String nome;
-    private String senha;
     private String usuario;
-    private String cpf;
-    private String email;
-    private String nomeToken;
+    private String nome;
+    private String token;
 
 }

@@ -1,5 +1,6 @@
 package br.com.emanuelgabriel.apienvioemail.controller;
 
+import br.com.emanuelgabriel.apienvioemail.domain.entity.Usuario;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.request.EmailRequestDTO;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.request.UsuarioRequestDTO;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.response.EmailResponseDTO;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -40,9 +42,16 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
 
     @GetMapping
-    public ResponseEntity<Page<UsuarioGridResponseDTO>> resumo(@RequestParam(value = "filtro") UsuarioFiltro filtro, Pageable pageable) {
+    public ResponseEntity<Page<UsuarioGridResponseDTO>> resumo(UsuarioFiltro filtro, Pageable pageable) {
         var pageFiltro = usuarioRepository.resumo(filtro, pageable);
         return pageFiltro != null ? ResponseEntity.ok().body(pageFiltro) : ResponseEntity.ok().build();
+    }
+
+    //@GetMapping
+    public ResponseEntity<List<UsuarioGridResponseDTO>> filtrarPor(UsuarioFiltro filtro) {
+        log.info("GET /usuarios - filtro :{}", filtro);
+        var listUsuario = usuarioRepository.filtrarPor(filtro);
+        return listUsuario != null ? ResponseEntity.ok().body(listUsuario) : ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/enviar", produces = MediaType.APPLICATION_JSON_VALUE)

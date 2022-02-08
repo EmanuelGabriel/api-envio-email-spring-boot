@@ -1,4 +1,4 @@
-package br.com.emanuelgabriel.apienvioemail.domain.mapper.response;
+package br.com.emanuelgabriel.apienvioemail.domain.repository.filter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -6,16 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-
+import java.util.Date;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioGridResponseDTO implements Serializable {
+public class UsuarioFilter {
 
-    private Long id;
     private String usuario;
     private String nome;
     private String cpf;
@@ -25,6 +24,5 @@ public class UsuarioGridResponseDTO implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataSolicitacao;
-
 
 }

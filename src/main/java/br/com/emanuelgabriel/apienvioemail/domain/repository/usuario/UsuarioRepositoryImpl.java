@@ -2,16 +2,15 @@ package br.com.emanuelgabriel.apienvioemail.domain.repository.usuario;
 
 import br.com.emanuelgabriel.apienvioemail.domain.entity.Usuario;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.response.UsuarioGridResponseDTO;
-import br.com.emanuelgabriel.apienvioemail.domain.repository.filter.UsuarioFiltro;
+import br.com.emanuelgabriel.apienvioemail.domain.repository.filter.UsuarioFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -20,11 +19,12 @@ import java.util.List;
 @Slf4j
 public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
 
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    // (type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     private EntityManager manager;
 
     @Override
-    public Page<UsuarioGridResponseDTO> resumo(UsuarioFiltro filtro, Pageable pageable) {
+    public Page<UsuarioGridResponseDTO> resumo(UsuarioFilter filtro, Pageable pageable) {
 
         CriteriaBuilder builder = manager.getCriteriaBuilder();
 
@@ -38,8 +38,11 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
                 root.get("id"),
                 root.get("usuario"),
                 root.get("nome"),
-                //historicoJoin.get("id"),
-                historicoJoin.get("token")
+                root.get("cpf"),
+                root.get("email"), //historicoJoin.get("id"),
+                historicoJoin.get("cpfConsultado"),
+                historicoJoin.get("dataSolicitacao")
+
         ));
 
         Predicate[] predicates = criarRestricoesFiltro(filtro, builder, root, historicoJoin);
@@ -53,52 +56,36 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
 
     /**
      * @param filtro
-     * @return List<Usuario>
-     */
-    @Override
-    public List<UsuarioGridResponseDTO> filtrarPor(UsuarioFiltro filtro) {
-        log.info("FiltrarPor {}", filtro);
-
-        CriteriaBuilder builder = manager.getCriteriaBuilder();
-
-        CriteriaQuery<UsuarioGridResponseDTO> criteria = builder.createQuery(UsuarioGridResponseDTO.class);
-
-        // ADICIONAR AS RESTRIÇÕES - FILTROS
-        Root<Usuario> root = criteria.from(Usuario.class);
-
-        // INNER JOIN ou o JOIN na TABELA 'HISTORICO'
-        From<?, ?> historicoJoin = root.join("historico", JoinType.INNER);
-
-        // CRIAR AS RESTRIÇÕES
-        Predicate[] predicates = criarRestricoesFiltro(filtro, builder, root, historicoJoin);
-        criteria.where(predicates);
-
-        TypedQuery<UsuarioGridResponseDTO> query = manager.createQuery(criteria);
-        return query.getResultList();
-    }
-
-    /**
-     * @param filtro
      * @param builder
      * @param root
      * @return predicate[]
-     * From<?, ?> historicoJoin
      */
-    private Predicate[] criarRestricoesFiltro(UsuarioFiltro filtro, CriteriaBuilder builder, Root<Usuario> root, From<?, ?> historicoJoin) {
+    private Predicate[] criarRestricoesFiltro(UsuarioFilter filtro, CriteriaBuilder builder, Root<Usuario> root, From<?, ?> historicoJoin) {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (!StringUtils.isEmpty(filtro.getUsuario())) {
+        if (!ObjectUtils.isEmpty(filtro.getUsuario())) {
             predicates.add(builder.like(builder.lower(root.get("usuario")), "%" + filtro.getUsuario().toLowerCase() + "%"));
         }
 
-        if (!StringUtils.isEmpty(filtro.getNome())) {
+        if (!ObjectUtils.isEmpty(filtro.getNome())) {
             predicates.add(builder.like(builder.lower(root.get("nome")), "%" + filtro.getNome().toLowerCase() + "%"));
         }
 
+        if (!ObjectUtils.isEmpty(filtro.getCpf())) {
+            predicates.add(builder.like(builder.lower(root.get("cpf")), "%" + filtro.getCpf() + "%"));
+        }
 
-        if (!StringUtils.isEmpty(filtro.getToken())) {
-            predicates.add(builder.like(builder.lower(historicoJoin.get("token")), "%" + filtro.getToken().toLowerCase() + "%"));
+        if (!ObjectUtils.isEmpty(filtro.getEmail())) {
+            predicates.add(builder.like(builder.lower(root.get("email")), "%" + filtro.getEmail().toLowerCase() + "%"));
+        }
+
+        if (!ObjectUtils.isEmpty(filtro.getCpfConsultado())) {
+            predicates.add(builder.equal(builder.lower(historicoJoin.get("cpfConsultado")), filtro.getCpfConsultado()));
+        }
+
+        if (!ObjectUtils.isEmpty(filtro.getDataSolicitacao())) {
+            predicates.add(builder.equal(builder.lower(historicoJoin.get("dataSolicitacao")), filtro.getDataSolicitacao()));
         }
 
         return predicates.toArray(new Predicate[predicates.size()]);
@@ -118,11 +105,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
     }
 
     /**
-     *
      * @param filter
      * @return long
      */
-    private Long total(UsuarioFiltro filter) {
+    private Long total(UsuarioFilter filter) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<Usuario> root = criteria.from(Usuario.class);

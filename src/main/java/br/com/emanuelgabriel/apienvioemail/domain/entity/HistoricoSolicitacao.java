@@ -1,19 +1,20 @@
 package br.com.emanuelgabriel.apienvioemail.domain.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_historico_solicitacao")
-public class HistoricoSolicitacao implements Serializable {
+@Table(name = "TB_HISTORICO_SOLICITACAO")
+public class HistoricoSolicitacao extends EntidadeBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,18 +22,16 @@ public class HistoricoSolicitacao implements Serializable {
     private Long id;
 
     @Column(name = "DATA_SOLICITACAO")
-    private Date dataSolicitacao;
+    private LocalDate dataSolicitacao;
 
-    @Column(name = "DATA_EXPIRACAO")
-    private Date dataExpiracao;
-
-    @Column(name = "TOKEN")
-    private String token;
-
-    @Column(name = "EXPIRADO")
-    private boolean expirado;
+    @Column(name = "CPF_CONSULTADO", nullable = false)
+    private String cpfConsultado;
 
     @ManyToOne
+    @JoinColumn(name = "ID_TIPO_CONSULTA", nullable = false)
+    private TipoConsulta tipoConsulta;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USUARIO")
     private Usuario usuario;
 

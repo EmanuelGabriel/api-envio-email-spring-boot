@@ -78,7 +78,7 @@ public class UsuarioController {
             throw new ObjetoNaoEncontradoException("Impossível enviar o e-mail");
         }
 
-        return usuario != null ? ResponseEntity.ok().body(usuario) : ResponseEntity.badRequest().build();
+        return usuario != null ? ResponseEntity.ok().body("E-mail enviado com sucesso!") : ResponseEntity.badRequest().build();
     }
 
 }

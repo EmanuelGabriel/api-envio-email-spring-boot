@@ -34,18 +34,18 @@
     <body>
         <div class="container">
             <div class="child">
-                <img rel="preload" height="100px" width="155px" 
-                    src="https://www.tce.pi.gov.br/wp-content/uploads/2021/01/tce-logo.png" 
-                    alt="Tribunal de Contas do Estado do Piauí">
-                <h1>Tribunal de Contas do Estado do Piauí - TCE/PI</h1>
+                <img rel="preload" height="120px" width="155px"
+                    src="https://blog.aspose.com/wp-content/uploads/sites/2/2020/05/Create-and-Send-Outlook-Emails-Java.jpg"
+                    alt="Emanuel Gabriel Sousa">
+                <h1>Sistema de Envio de E-mails</h1>
                 <h2>Olá, ${nome}</h2>
-				<p>Você solicitou uma alteração da senha de acesso aos sistemas de prestação de contas do TCE/PI. Clique no link abaixo para prosseguir com a alteração:</p>
+				<p>Você solicitou uma alteração da senha de acesso aos sistemas de envio de e-mail. Clique no link ${url} abaixo para prosseguir com a alteração:</p>
 
             	<p>Esse link irá expirar em 24 horas</p>
-            	<p>Caso você não tenha pedido essa alteração, entre em contato conosco pelo e-mail suporte@tce.pi.gov.br</p>
+            	<p>Caso você não tenha pedido essa alteração, entre em contato conosco pelo e-mail emanuel.gabriel.sousa@gmail.com</p>
             	<p>Atenciosamente</p>
             	<span></span>
-            	<p>Tribunal de Contas do Piauí - TCE/PI</p>
+            	<p>Emanuel Gabriel Sousa - Developer Senior Java</p>
             </div>
         </div>
 	</body>

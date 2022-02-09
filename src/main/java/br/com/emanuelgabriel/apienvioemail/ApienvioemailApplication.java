@@ -36,18 +36,18 @@ public class ApienvioemailApplication implements CommandLineRunner {
 
 
         // CRIAR USUÁRIO
-        var usuarioJoao = usuarioRepository.findByCpf("02968496344");
-        var cpfJoao = usuarioJoao != null ? usuarioJoao.getCpf() : "02968496344";
+        var usuario01 = usuarioRepository.findByCpf("02968496344");
+        var cpfJoao = usuario01 != null ? usuario01.getCpf() : "02968496344";
 
         // PRIMEIRO SALVO O OBJETO DO TIPO 'USUARIO'
-        if (usuarioJoao == null) {
-            usuarioJoao = new Usuario();
-            usuarioJoao.setNome("João Pedro");
-            usuarioJoao.setEmail("joaopedro123@hotmail.com");
-            usuarioJoao.setSenha("123456");
-            usuarioJoao.setCpf(cpfJoao);
-            usuarioJoao.setUsuario("joao");
-            usuarioRepository.save(usuarioJoao);
+        if (usuario01 == null) {
+            usuario01 = new Usuario();
+            usuario01.setNome("João Pedro");
+            usuario01.setEmail("joaopedro123@hotmail.com");
+            usuario01.setSenha("123456");
+            usuario01.setCpf(cpfJoao);
+            usuario01.setUsuario("joao");
+            usuarioRepository.save(usuario01);
         }
 
         // CRIAR HISTÓRICO DE SOLICITAÇÃO
@@ -63,25 +63,25 @@ public class ApienvioemailApplication implements CommandLineRunner {
 
         if (historico == null) {
             historico = new HistoricoSolicitacao();
-            historico.setUsuario(usuarioJoao);
-            historico.setCpfConsultado(usuarioJoao.getCpf());
+            historico.setUsuario(usuario01);
+            historico.setCpfConsultado(usuario01.getCpf());
             historico.setDataSolicitacao(LocalDate.of(2021, 12, 28));
             historico.setTipoConsulta(tipoConsulta);
             historicoSolicitacaoRepository.save(historico);
         }
 
         // PRIMEIRO SALVO O OBJETO DO TIPO 'USUARIO'
-        var usuarioMaria = usuarioRepository.findByCpf("32559118009");
-        String cpfMaria = usuarioMaria != null ? usuarioMaria.getCpf() : "32559118009";
+        var usuario02 = usuarioRepository.findByCpf("32559118009");
+        String cpfMaria = usuario02 != null ? usuario02.getCpf() : "32559118009";
 
-        if (usuarioMaria == null) {
-            usuarioMaria = new Usuario();
-            usuarioMaria.setNome("Maria Isabel");
-            usuarioMaria.setEmail("maria123@gmail.com");
-            usuarioMaria.setSenha("123456789");
-            usuarioMaria.setCpf(cpfMaria);
-            usuarioMaria.setUsuario("maria");
-            usuarioRepository.save(usuarioMaria);
+        if (usuario02 == null) {
+            usuario02 = new Usuario();
+            usuario02.setNome("Maria Isabel");
+            usuario02.setEmail("emanuel.gabriel.sousa@gmail.com");
+            usuario02.setSenha("123456789");
+            usuario02.setCpf(cpfMaria);
+            usuario02.setUsuario("maria");
+            usuarioRepository.save(usuario02);
         }
 
         // CRIAR HISTÓRICO DE SOLICITAÇÃO
@@ -97,8 +97,8 @@ public class ApienvioemailApplication implements CommandLineRunner {
 
         if (historicoMaria == null) {
             historicoMaria = new HistoricoSolicitacao();
-            historicoMaria.setUsuario(usuarioMaria);
-            historicoMaria.setCpfConsultado(usuarioMaria.getCpf());
+            historicoMaria.setUsuario(usuario02);
+            historicoMaria.setCpfConsultado(usuario02.getCpf());
             historicoMaria.setDataSolicitacao(LocalDate.of(2022, 02, 01));
             historicoMaria.setTipoConsulta(tipoConsulta02);
             historicoSolicitacaoRepository.save(historicoMaria);

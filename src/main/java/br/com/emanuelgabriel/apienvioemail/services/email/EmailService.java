@@ -45,6 +45,7 @@ public class EmailService {
 
         Map model = new HashMap();
         model.put("nome", nome);
+        model.put("url", url);
 
         mailModel.setModel(model);
 

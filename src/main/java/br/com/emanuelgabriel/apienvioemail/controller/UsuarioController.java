@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Objects;
 
 
 /**
@@ -43,9 +44,9 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
 
     @GetMapping
-    public ResponseEntity<Page<UsuarioGridResponseDTO>> resumo(UsuarioFilter filtro, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<UsuarioGridResponseDTO>> resumo(UsuarioFilter filtro, @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("GET /usuarios - filtro {}; PageNumber:{}; PageSize:{}", filtro, pageable.getPageNumber(), pageable.getPageSize());
-        var pageFiltro = usuarioRepository.resumo(filtro, pageable);
+        var pageFiltro = usuarioRepository.filtrarPor(filtro, pageable);
         return pageFiltro != null ? ResponseEntity.ok().body(pageFiltro) : ResponseEntity.ok().build();
     }
 
@@ -55,8 +56,8 @@ public class UsuarioController {
         log.info("GET /usuarios/enviar {}", request);
 
         var usuario = usuarioRepository.findByCpf(request.getCpf());
-        if (usuario == null) {
-            throw new UsuarioNaoEncontradoException("Usuário de CPF ".concat(usuario.getCpf()).concat(" não encontrado"));
+        if (Objects.isNull(usuario)) {
+            throw new UsuarioNaoEncontradoException("Usuário de CPF ".concat(Objects.requireNonNull(usuario).getCpf()).concat(" não encontrado"));
         }
 
         try {
@@ -78,7 +79,7 @@ public class UsuarioController {
             throw new ObjetoNaoEncontradoException("Impossível enviar o e-mail");
         }
 
-        return usuario != null ? ResponseEntity.ok().body("E-mail enviado com sucesso!") : ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().body("E-mail enviado com sucesso!");
     }
 
 }

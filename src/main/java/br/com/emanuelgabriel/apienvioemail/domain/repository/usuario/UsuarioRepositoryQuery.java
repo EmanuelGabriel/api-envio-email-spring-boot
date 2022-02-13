@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface UsuarioRepositoryQuery {
 
-    Page<UsuarioGridResponseDTO> resumo(UsuarioFilter filtro, Pageable pageable);
+    Page<UsuarioGridResponseDTO> filtrarPor(UsuarioFilter filtro, Pageable pageable);
 
 }

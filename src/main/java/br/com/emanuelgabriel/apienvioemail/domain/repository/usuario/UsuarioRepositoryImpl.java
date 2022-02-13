@@ -24,7 +24,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
     private EntityManager manager;
 
     @Override
-    public Page<UsuarioGridResponseDTO> resumo(UsuarioFilter filtro, Pageable pageable) {
+    public Page<UsuarioGridResponseDTO> filtrarPor(UsuarioFilter filtro, Pageable pageable) {
 
         CriteriaBuilder builder = manager.getCriteriaBuilder();
 
@@ -55,9 +55,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
     }
 
     /**
-     * @param filtro
-     * @param builder
-     * @param root
+     * @param filtro filtro a ser executado
+     * @param builder builder
+     * @param root root
      * @return predicate[]
      */
     private Predicate[] criarRestricoesFiltro(UsuarioFilter filtro, CriteriaBuilder builder, Root<Usuario> root, From<?, ?> historicoJoin) {
@@ -92,8 +92,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
     }
 
     /**
-     * @param query
-     * @param pageable
+     * @param query query a ser executada
+     * @param pageable modo de paginação
      */
     private void adicionarRestrincoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
         int paginaAtual = pageable.getPageNumber();

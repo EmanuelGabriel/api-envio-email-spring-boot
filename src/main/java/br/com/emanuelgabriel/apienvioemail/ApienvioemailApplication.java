@@ -42,11 +42,11 @@ public class ApienvioemailApplication implements CommandLineRunner {
         // PRIMEIRO SALVO O OBJETO DO TIPO 'USUARIO'
         if (usuario01 == null) {
             usuario01 = new Usuario();
-            usuario01.setNome("João Pedro");
-            usuario01.setEmail("joaopedro123@hotmail.com");
+            usuario01.setNome("Samuel Gomes");
+            usuario01.setEmail("emanuel.gabriel.sousa@gmail.com");
             usuario01.setSenha("123456");
             usuario01.setCpf(cpfJoao);
-            usuario01.setUsuario("joao");
+            usuario01.setUsuario("samuel.gomes");
             usuarioRepository.save(usuario01);
         }
 
@@ -57,7 +57,7 @@ public class ApienvioemailApplication implements CommandLineRunner {
         var tipoConsulta = tipoConsultaRepository.buscarPorID(1L);
         if (tipoConsulta == null) {
             tipoConsulta = new TipoConsulta();
-            tipoConsulta.setDescricao("Analítica");
+            tipoConsulta.setDescricao("ANALÍTICA");
             tipoConsultaRepository.save(tipoConsulta);
         }
 
@@ -76,11 +76,11 @@ public class ApienvioemailApplication implements CommandLineRunner {
 
         if (usuario02 == null) {
             usuario02 = new Usuario();
-            usuario02.setNome("Maria Isabel");
+            usuario02.setNome("Samuel Gabriel Gomes de Sousa");
             usuario02.setEmail("emanuel.gabriel.sousa@gmail.com");
             usuario02.setSenha("123456789");
             usuario02.setCpf(cpfMaria);
-            usuario02.setUsuario("maria");
+            usuario02.setUsuario("samuel.sousa");
             usuarioRepository.save(usuario02);
         }
 

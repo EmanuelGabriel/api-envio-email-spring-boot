@@ -5,21 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioGridResponseDTO implements Serializable {
+public class UsuarioResponseDTO implements Serializable {
 
     private Long id;
     private String usuario;
     private String nome;
     private String cpf;
     private String email;
-    private String cpfConsultado;
-    private LocalDate dataSolicitacao;
-
-
+    private List<HistoricoResponseDTO> historico;
 }

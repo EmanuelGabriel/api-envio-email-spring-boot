@@ -1,9 +1,13 @@
 package br.com.emanuelgabriel.apienvioemail.services.email;
 
-import br.com.emanuelgabriel.apienvioemail.domain.mapper.request.EmailRequestDTO;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,12 +15,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import br.com.emanuelgabriel.apienvioemail.domain.mapper.request.EmailRequestDTO;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 /**
  * @author emanuel.sousa
@@ -43,7 +45,7 @@ public class EmailService {
      */
     public void enviarEmail(EmailRequestDTO mailModel, String nome, String url) throws MessagingException, IOException, TemplateException {
 
-        Map model = new HashMap();
+        Map<String, String> model = new HashMap<>();
         model.put("nome", nome);
         model.put("url", url);
 

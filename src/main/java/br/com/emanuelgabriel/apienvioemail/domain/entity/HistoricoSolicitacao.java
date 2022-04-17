@@ -16,7 +16,12 @@ import java.time.LocalDate;
 @Table(name = "TB_HISTORICO_SOLICITACAO")
 public class HistoricoSolicitacao extends EntidadeBase {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_HISTORICO")
     private Long id;

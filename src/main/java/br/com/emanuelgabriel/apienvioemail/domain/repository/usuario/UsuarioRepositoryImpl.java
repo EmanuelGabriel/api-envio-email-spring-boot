@@ -39,7 +39,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
                 root.get("usuario"),
                 root.get("nome"),
                 root.get("cpf"),
-                root.get("email"), //historicoJoin.get("id"),
+                root.get("email"),
+//                historicoJoin.get("id"),
                 historicoJoin.get("cpfConsultado"),
                 historicoJoin.get("dataSolicitacao")
 

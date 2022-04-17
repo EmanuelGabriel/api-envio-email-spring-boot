@@ -1,8 +1,11 @@
 package br.com.emanuelgabriel.apienvioemail.controller;
 
+import br.com.emanuelgabriel.apienvioemail.domain.mapper.UsuarioMapper;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.request.EmailRequestDTO;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.request.UsuarioRequestDTO;
+import br.com.emanuelgabriel.apienvioemail.domain.mapper.response.MensagensResponseDTO;
 import br.com.emanuelgabriel.apienvioemail.domain.mapper.response.UsuarioGridResponseDTO;
+import br.com.emanuelgabriel.apienvioemail.domain.mapper.response.UsuarioResponseDTO;
 import br.com.emanuelgabriel.apienvioemail.domain.repository.UsuarioRepository;
 import br.com.emanuelgabriel.apienvioemail.domain.repository.filter.UsuarioFilter;
 import br.com.emanuelgabriel.apienvioemail.services.email.EmailService;
@@ -11,6 +14,7 @@ import br.com.emanuelgabriel.apienvioemail.services.exceptions.UsuarioNaoEncontr
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,9 +47,22 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioMapper mapper;
+
+    @Value(value = "${email.envio.padrao}")
+    private String emailEnvioPadrao;
+
     @GetMapping
+    public ResponseEntity<Page<UsuarioResponseDTO>> buscarTodos(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("GET /usuarios {}; PageNumber:{}; PageSize:{}", pageable.getPageNumber(), pageable.getPageSize());
+        var pageFiltro = usuarioRepository.findAll(pageable);
+        return pageFiltro != null ? ResponseEntity.ok().body(mapper.mapEntityPageToDTO(pageable, pageFiltro)) : ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/resumo", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<UsuarioGridResponseDTO>> resumo(UsuarioFilter filtro, @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        log.info("GET /usuarios - filtro {}; PageNumber:{}; PageSize:{}", filtro, pageable.getPageNumber(), pageable.getPageSize());
+        log.info("GET /usuarios/resumo - filtro {}; PageNumber:{}; PageSize:{}", filtro, pageable.getPageNumber(), pageable.getPageSize());
         var pageFiltro = usuarioRepository.filtrarPor(filtro, pageable);
         return pageFiltro != null ? ResponseEntity.ok().body(pageFiltro) : ResponseEntity.ok().build();
     }
@@ -63,7 +80,7 @@ public class UsuarioController {
         try {
 
             var emailDto = new EmailRequestDTO();
-            emailDto.setEmailOrigem("emanuel.gabriel.sousa@hotmail.com");
+            emailDto.setEmailOrigem(this.emailEnvioPadrao);
             emailDto.setEmailDestino(usuario.getEmail());
             emailDto.setAssunto("Seu link de acesso");
             emailService.enviarEmail(emailDto, usuario.getNome(), "/validar?token=" + usuario.getId());
@@ -79,7 +96,7 @@ public class UsuarioController {
             throw new ObjetoNaoEncontradoException("Impossível enviar o e-mail");
         }
 
-        return ResponseEntity.ok().body("E-mail enviado com sucesso!");
+        return ResponseEntity.ok().body(new MensagensResponseDTO("E-mail enviado com sucesso!"));
     }
 
 }

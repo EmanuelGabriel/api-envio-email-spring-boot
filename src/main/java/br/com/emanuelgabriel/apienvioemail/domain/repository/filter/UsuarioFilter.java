@@ -15,14 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioFilter {
 
-    private String usuario;
-    private String nome;
-    private String cpf;
-    private String email;
-    private String cpfConsultado;
+	private String usuario;
+	private String nome;
+	private String cpf;
+	private String email;
+	private String cpfConsultado;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate dataSolicitacao;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	private LocalDate dataSolicitacao;
 
 }
